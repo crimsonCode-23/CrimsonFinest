@@ -1,0 +1,103 @@
+import math
+import random
+import nextcord
+from nextcord.ext import commands
+
+
+
+
+
+bot = commands.Bot()
+
+@bot.event
+async def on_ready():
+    print(f'We are {bot.user}'.format(bot))
+
+#@bot.slash_command(description="rolls a s sided die n times and returns the sum")
+#async def r(ctx, n: int, s: int):
+#    rolls = [random.randint(1, s for _ in range(n))]
+#    total = sum(rolls)
+#    await ctx.send('Rolling {0} {1}-sided dice... {2} = {3}'.format(n, s, '+'.join(map(str, rolls)), total))
+
+@bot.slash_command(description="predicts gpa based off current grade")
+async def predictgpa(ctx, current_gpa: float, current_grade: float, total_credits: int, class_credits: int):
+    current_points = current_gpa * total_credits
+    class_points = current_grade * class_credits
+    total_points = current_points + class_points
+    total_credits = total_credits + class_credits 
+    predict_gpa = round(total_points / total_credits)
+    await ctx.send(predict_gpa)
+
+@bot.slash_command(description="")
+async def gradewizard(CurrentGPA, TotalCredits):
+    # Define course grading scales
+    BE425 = {'Assignments': 0.2, 'Homeworks': 0.15, 'Examinations': 0.47, 'Final': 0.18, 'Quizes': 0, 'Labs': 0, 'Participation': 0, 'nAs': 10, 'nHo': 10, 'nEx': 3, 'nQi': 1, 'nLa': 1, 'nPa': 1}
+    CPTS121 = {'Assignments': 0.3, 'Homeworks': 0.15, 'Examinations': 0.2, 'Final': 0.2, 'Quizes': 0.08, 'Labs': 0.2, 'Participation': 0.02, 'nAs': 6, 'nHo': 10, 'nEx': 2, 'nQi': 8, 'nLa': 10, 'nPa': 45}
+    EE261 = {'Assignments': 0, 'Homeworks': 0.16, 'Examinations': 0.54, 'Final': 0.21, 'Quizes': 0, 'Labs': 0, 'Participation': 0.09, 'nAs': 1, 'nHo': 12, 'nEx': 3, 'nQi': 1, 'nLa': 1, 'nPa': 40}
+    MATH364 = {'Assignments': 0, 'Homeworks': 0.25, 'Examinations': 0.45, 'Final': 0.15, 'Quizes': 0.15, 'Labs': 0, 'Participation': 0, 'nAs': 1, 'nHo': 12, 'nEx': 3, 'nQi': 15, 'nLa': 1, 'nPa': 1}
+    MSE201 = {'Assignments': 0, 'Homeworks': 0.15, 'Examinations': 0.6, 'Final': 0, 'Quizes': 0.25, 'Labs': 0, 'Participation': 0, 'nAs': 0, 'nHo': 15, 'nEx': 3, 'nQi': 15, 'nLa': 1, 'nPa': 1}
+
+    CurrentGPA=input("What is your current GPA?")
+    TotalCredits=input("How many credit hours have you taken so far?")
+    Credits=input("Enter number of credit hours of your class:")
+    CurrentGrade=input("Enter Current Grade: (Ex. 94.61)")
+    PercentCompletion=6/16
+    ProjectedGPA=4*(CurrentGPA*TotalCredits+Credits*CurrentGrade)/(CurrentGPA*TotalCredits)
+
+    CourseCode=input("Enter Course Code:(Ex. EE261)")
+    PercentCompletion=CompletedPoints/TotalPoints
+    if CurrentGrade>=93.00:
+        CurrentLowerBound=93.00
+        CurrentHigherBound=100
+        Grade= 'A'
+    elif CurrentGrade>=90.00:
+        CurrentLowerBound=90.00
+        CurrentHigherBound=93.00
+        Grade= 'A-'
+    elif CurrentGrade>=87.00:
+        CurrentLowerBound=87.00
+        CurrentHigherBound=90.00
+        Grade 'B+'
+    elif CurrentGrade>=83.00:
+        CurrentLowerBound=83.00
+        CurrentHigherBound=87.00
+        Grade= 'B'
+    elif CurrentGrade>=80.00:
+        CurrentLowerBound=80.00
+        CurrentHigherBound=83.00
+        Grade= 'B-'
+    elif CurrentGrade>=77.00:
+        CurrentLowerBound=77.00
+        CurrentHigherBound=80.00
+        Grade= 'C+'
+    elif CurrentGrade>=70.00:
+        CurrentLowerBound=73.00
+        CurrentHigherBound=77.00
+        Grade='C'
+    elif CurrentGrade>=90.00:
+        CurrentLowerBound=70.00
+        CurrentHigherBound=73.00
+        Grade= 'C-'
+    elif CurrentLowerBound>=67.00:
+        CurrentLowerBound=67.00
+        CurrentHigherBound=70.00
+        Grade= 'D+'
+    elif CurrentLowerBound>=63.00:
+        CurrentLowerBound=63.00
+        CurrentHigherBound=67.00
+        Grade= 'D'
+    else:
+        CurrentLowerBound=00.00
+        CurrentHigherBound=63.00
+        Grade= 'F'
+        print(CurrentHigherBound)
+        print(CurrentLowerBound)
+        
+    GradeAddition = 100 * (CurrentGrade-CurrentLowerBound)
+    BetterGrade=(CurrentHigherBound-CompletionPercent*CurrentGrade)/(1-CompletionPercent)
+    MaintainGrade=(-CompletionPercent*CurrentGrade)/(1-CompletionPercent)
+
+    await ctx.send('Minuim average grade to better grade')
+    
+
+bot.run('MTA3NjY2MzE0MTc4Nzc2MjcyMA.GrgMtY.s2Ys5q_wYxCVkgjkAIho1MY3bAh48wRkn-aE0E')
